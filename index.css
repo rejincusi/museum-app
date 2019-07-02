@@ -1,10 +1,10 @@
 body {
-  background-color: #3abe98;
-  margin: 0;
-  padding: 2rem 0;
-  width: 100%;
+  background-color: rgb(60, 218, 191);
   font-family: 'Inconsolata', monospace;
   text-align: center;
+  margin: 0;
+  padding: 2rem 0;
+  width : 100%;
 }
 
 main {
