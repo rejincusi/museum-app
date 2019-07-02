@@ -7,6 +7,9 @@ function submitComment() {
   const h3 = document.createElement('h3')
   const p = document.createElement('p')
 
+  if(validationError(name, msg)){
+    return null
+  }
   // reassign value
   h3.innerHTML = `${name} said:`
   p.innerHTML = msg
@@ -21,4 +24,23 @@ function submitComment() {
   // reassign form 
   inputField.value = null
   textArea.value = null
+}
+
+function validationError(name, msg) {
+  if (!name) {
+    alert('You forgot to fill in your name!')
+    return true;
+  }
+
+  if (!msg) {
+    alert('You forgot to fill in your message!')
+    return true;
+  }
+
+  if(msg.length > 280) {
+    alert('Your comment is too long')
+    return true
+  }
+
+  return false
 }
