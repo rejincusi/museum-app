@@ -13,4 +13,12 @@ function submitComment() {
   comment.classList.add('comment')
   comment.appendChild(h3)
   comment.appendChild(p)
+
+  // display comment
+  const commentSection = document.getElementById('comments')
+  commentSection.appendChild(comment)
+
+  // reassign form 
+  inputField.value = null
+  textArea.value = null
 }
