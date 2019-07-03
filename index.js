@@ -328,7 +328,34 @@ const paintings = data.artObjects
 
 for (i = 0; i < paintings.length; i++) { 
   const currentPainting = paintings[i].webImage.url
-  displayPainting(currentPainting)
+
+  // check specific validation
+  if (specificationValidationChecker(paintings[i])) {
+    //display if passed
+    displayPainting(currentPainting)
+  }
+}
+
+function specificationValidationChecker(artObject) {
+  // painting width bigger than 500
+  if (artObject.webImage.width < 500) {
+    return false
+  }
+  // not display honthorst
+  if (artObject.principalOrFirstMaker === "Gerard van Honthorst") {
+    return false
+  }
+  // should be before 1800 
+  const arrYear = artObject.longTitle.match(/\d+/g).map(Number)
+  const greaterThan1800 = arrYear.every(function (e) {
+      return e > 1800
+  })
+
+  if (greaterThan1800) {
+    return false
+  }
+
+  return true
 }
 
 function displayPainting(painting) {
