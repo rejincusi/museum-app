@@ -336,6 +336,8 @@ for (i = 0; i < paintings.length; i++) {
   }
 }
 
+// functions:
+
 function specificationValidationChecker(artObject) {
   // painting width bigger than 500
   if (artObject.webImage.width < 500) {
@@ -365,9 +367,63 @@ function displayPainting(painting) {
   
   linkElement.href = `./pages/detail-page.html`
 
+  linkElement.classList.add('artObjectItem')
+
   img.classList.add('artObject')
   img.src = painting
   
   linkElement.appendChild(img)
   gallery.appendChild(linkElement)
+}
+
+function searchPainting() {
+  console.log(paintings)
+  const search = document.getElementById('searchInput')
+  const searchValue = search.value.toLowerCase()
+
+  if (!searchValue) {
+    alert('You must search something to proceed!')
+    return null
+  }
+
+  let searchResult = []
+
+  const checkIfNumber = parseInt(searchValue)
+  if (isNaN(checkIfNumber)) {
+    // search name
+    searchResult = paintings.filter(e => e.principalOrFirstMaker.toLowerCase().includes(searchValue))
+  } else {
+    // search year
+    searchResult = paintings.filter(e => e.longTitle.includes(searchValue))
+  }
+  
+  // check if there is a match
+  if (searchResult.length > 0 && searchValue) {
+    // remove first
+    removeElementsByClass('artObjectItem')
+
+    // display result
+    for (i = 0; i < searchResult.length; i++) {
+      const currentPainting = searchResult[i].webImage.url
+      displayPainting(currentPainting)
+    }
+  } else {
+    // show no result
+    removeElementsByClass('artObjectItem')
+
+    let gallery = document.getElementById('gallery')
+    const info = document.createElement('span')
+    info.classList.add('artObjectItem')
+    info.style.color = 'red'
+    info.innerHTML = 'Sorry no result!'
+
+    gallery.appendChild(info)
+  }
+}
+
+function removeElementsByClass(className){
+  var elements = document.getElementsByClassName(className);
+  while(elements.length > 0){
+      elements[0].parentNode.removeChild(elements[0]);
+  }
 }
