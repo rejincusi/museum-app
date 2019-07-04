@@ -324,10 +324,13 @@ const data = {
   ]
 }
 
+// list of item user liked
+const itemLiked = []
+
 const paintings = data.artObjects
 
 for (i = 0; i < paintings.length; i++) { 
-  const currentPainting = paintings[i].webImage.url
+  const currentPainting = paintings[i]
 
   // check specific validation
   if (specificationValidationChecker(paintings[i])) {
@@ -336,7 +339,6 @@ for (i = 0; i < paintings.length; i++) {
   }
 }
 
-// functions:
 
 function specificationValidationChecker(artObject) {
   // painting width bigger than 500
@@ -362,22 +364,47 @@ function specificationValidationChecker(artObject) {
 
 function displayPainting(painting) {
   let gallery = document.getElementById('gallery')
+  let div = document.createElement('div')
   let img = document.createElement('img')
   let linkElement = document.createElement('a')
   
   linkElement.href = `./pages/detail-page.html`
 
-  linkElement.classList.add('artObjectItem')
+  div.classList.add('artObjectItem')
 
   img.classList.add('artObject')
-  img.src = painting
+  img.src = painting.webImage.url
   
   linkElement.appendChild(img)
-  gallery.appendChild(linkElement)
+  div.appendChild(linkElement)
+  
+  // add like button
+  let likeBtn = document.createElement('button')
+  likeBtn.classList.add('artObject')
+  likeBtn.innerHTML = 'Like this'
+  likeBtn.onclick = function(e) {
+    
+    // add to item like array if doesn't exist
+    const checkifLikedItemExist = itemLiked.findIndex(x => x.id==painting.id)
+    if(checkifLikedItemExist === -1) {
+      itemLiked.push(painting)
+      displayAddLikeToList(painting)
+    }
+  }
+  
+  div.appendChild(likeBtn)
+  gallery.appendChild(div)
 }
 
+function displayAddLikeToList(painting) {
+  let youLikeSection = document.getElementById('paintYouLiked')
+  let p = document.createElement('p')
+  p.innerHTML = painting.longTitle
+  youLikeSection.appendChild(p)
+}
+
+
 function searchPainting() {
-  console.log(paintings)
   const search = document.getElementById('searchInput')
   const searchValue = search.value.toLowerCase()
 
@@ -404,13 +431,14 @@ function searchPainting() {
 
     // display result
     for (i = 0; i < searchResult.length; i++) {
-      const currentPainting = searchResult[i].webImage.url
+      const currentPainting = searchResult[i]
       displayPainting(currentPainting)
     }
   } else {
     // show no result
     removeElementsByClass('artObjectItem')
 
+    // add no result info
     let gallery = document.getElementById('gallery')
     const info = document.createElement('span')
     info.classList.add('artObjectItem')
